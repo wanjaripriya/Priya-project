@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage('Deployment') {
+        stage('Application Deployment') {
             agent {
                 label 'application'
             }
@@ -12,6 +12,18 @@ pipeline {
 				cd Priya-project
 				docker build -t tomcat .
 				docker run -d -p 8080:8080 --name tomcat-server tomcat
+				scp -i "Mumbai.pem" init-scripts docker-compose.yml ubuntu@10.0.140.175:/home/ubuntu
+				'''
+            }
+        }
+        stage('Database Deployment') {
+			agent {
+                label 'database'
+            }
+            steps {
+                sh '''
+				cd /home/ubuntu/
+				docker-compose up --build
 				'''
             }
         }
