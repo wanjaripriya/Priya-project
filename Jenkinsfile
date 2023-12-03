@@ -13,6 +13,7 @@ pipeline {
 				cd Priya-project
 				docker build -t tomcat .
 				docker run -d -p 8080:8080 --name tomcat-server tomcat
+    				cp /home/ubuntu/Mumbai.pem .
 				scp -i "Mumbai.pem" init-scripts docker-compose.yml ubuntu@10.0.140.175:/home/ubuntu
 				'''
             }
